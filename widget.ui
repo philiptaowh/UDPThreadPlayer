@@ -19,10 +19,7 @@
   <property name="windowTitle">
    <string>Widget</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_5">
-   <property name="spacing">
-    <number>0</number>
-   </property>
+  <layout class="QGridLayout" name="gridLayout_4">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -35,7 +32,7 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item>
+   <item row="0" column="0">
     <widget class="QWidget" name="title_widget" native="true">
      <property name="minimumSize">
       <size>
@@ -130,7 +127,7 @@ font: 700 10pt &quot;Microsoft YaHei UI&quot;;</string>
      </layout>
     </widget>
    </item>
-   <item>
+   <item row="1" column="0">
     <widget class="QWidget" name="widget_3" native="true">
      <property name="minimumSize">
       <size>
@@ -162,273 +159,6 @@ font: 700 10pt &quot;Microsoft YaHei UI&quot;;</string>
         </widget>
        </widget>
       </item>
-      <item row="0" column="1" rowspan="2">
-       <widget class="QStackedWidget" name="display_widget">
-        <property name="minimumSize">
-         <size>
-          <width>660</width>
-          <height>500</height>
-         </size>
-        </property>
-        <property name="currentIndex">
-         <number>1</number>
-        </property>
-        <widget class="QWidget" name="page_rtp">
-         <layout class="QGridLayout" name="gridLayout_4">
-          <item row="0" column="0">
-           <widget class="QLabel" name="img_label">
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(0, 0, 0);</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="page_pb">
-         <layout class="QGridLayout" name="gridLayout_3">
-          <item row="0" column="0" colspan="2">
-           <widget class="QVideoWidget" name="img_label2" native="true"/>
-          </item>
-          <item row="1" column="0">
-           <widget class="QPushButton" name="play_Btn">
-            <property name="maximumSize">
-             <size>
-              <width>80</width>
-              <height>80</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>播放</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QSlider" name="horizontalSlider">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="page_set">
-         <layout class="QGridLayout" name="gridLayout_5">
-          <item row="0" column="0">
-           <layout class="QVBoxLayout" name="verticalLayout">
-            <item>
-             <widget class="QLabel" name="label">
-              <property name="text">
-               <string>UDP设置</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QWidget" name="widget" native="true">
-              <layout class="QGridLayout" name="gridLayout">
-               <item row="1" column="2">
-                <widget class="QLabel" name="label_7">
-                 <property name="text">
-                  <string>FPGA Port</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="QLineEdit" name="DIP_lineEdit">
-                 <property name="maximumSize">
-                  <size>
-                   <width>110</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>192.168.1.10</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="3">
-                <widget class="QLineEdit" name="UPt_lineEdit">
-                 <property name="maximumSize">
-                  <size>
-                   <width>110</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>1234</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="0">
-                <widget class="QLabel" name="label_5">
-                 <property name="text">
-                  <string>FPGA IP</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="3">
-                <widget class="QLineEdit" name="DPt_lineEdit">
-                 <property name="maximumSize">
-                  <size>
-                   <width>110</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>1234</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="2">
-                <widget class="QLabel" name="label_6">
-                 <property name="text">
-                  <string>本机 Port</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="0">
-                <widget class="QLabel" name="label_4">
-                 <property name="text">
-                  <string>本机 IP</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="QLineEdit" name="UIP_lineEdit">
-                 <property name="maximumSize">
-                  <size>
-                   <width>110</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>192.168.1.102</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QWidget" name="widget_2" native="true">
-              <layout class="QGridLayout" name="gridLayout_2">
-               <item row="0" column="4">
-                <widget class="QLineEdit" name="H_lineEdit_6">
-                 <property name="maximumSize">
-                  <size>
-                   <width>110</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>480</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="QLabel" name="label_10">
-                 <property name="text">
-                  <string>W</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="3">
-                <widget class="QLabel" name="label_11">
-                 <property name="text">
-                  <string>H</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="0">
-                <widget class="QLabel" name="label_9">
-                 <property name="text">
-                  <string>分辨率设置</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="2">
-                <widget class="QLineEdit" name="W_lineEdit">
-                 <property name="maximumSize">
-                  <size>
-                   <width>110</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>640</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QFrame" name="frame">
-              <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Raised</enum>
-              </property>
-              <layout class="QHBoxLayout" name="horizontalLayout">
-               <item>
-                <widget class="QLabel" name="label_12">
-                 <property name="text">
-                  <string>接收模式</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="comboBox_Send">
-                 <property name="maximumSize">
-                  <size>
-                   <width>110</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>连续接收</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>先发后收</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="comboBox_Flag">
-                 <property name="maximumSize">
-                  <size>
-                   <width>110</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>2位行头</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>8位帧头</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </widget>
-      </item>
       <item row="0" column="2" rowspan="2">
        <widget class="QWidget" name="widget_4" native="true">
         <property name="maximumSize">
@@ -447,48 +177,76 @@ font: 700 10pt &quot;Microsoft YaHei UI&quot;;</string>
             </size>
            </property>
            <property name="currentIndex">
-            <number>1</number>
+            <number>0</number>
            </property>
            <widget class="QWidget" name="page_rtpt">
-            <widget class="QPushButton" name="catch_Btn">
-             <property name="geometry">
-              <rect>
-               <x>20</x>
-               <y>50</y>
-               <width>80</width>
-               <height>24</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>截屏</string>
-             </property>
-            </widget>
-            <widget class="QPushButton" name="catch2_Btn">
-             <property name="geometry">
-              <rect>
-               <x>130</x>
-               <y>50</y>
-               <width>80</width>
-               <height>24</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>开始录屏</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_13">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>10</y>
-               <width>54</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>工具栏</string>
-             </property>
-            </widget>
+            <layout class="QGridLayout" name="gridLayout_9">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_13">
+               <property name="maximumSize">
+                <size>
+                 <width>200</width>
+                 <height>16</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>工具栏</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QWidget" name="widget_5" native="true">
+               <layout class="QGridLayout" name="gridLayout_10">
+                <item row="0" column="0">
+                 <widget class="QPushButton" name="Start_Stop">
+                  <property name="text">
+                   <string>开始</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QPushButton" name="testmode_Btn">
+                  <property name="maximumSize">
+                   <size>
+                    <width>80</width>
+                    <height>24</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>调试模式</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QPushButton" name="catch2_Btn">
+                  <property name="maximumSize">
+                   <size>
+                    <width>80</width>
+                    <height>24</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>开始录屏</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QPushButton" name="catch_Btn">
+                  <property name="maximumSize">
+                   <size>
+                    <width>80</width>
+                    <height>24</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>截屏</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
            </widget>
            <widget class="QWidget" name="page_pbt">
             <layout class="QGridLayout" name="gridLayout_8">
@@ -596,10 +354,312 @@ font: 700 10pt &quot;Microsoft YaHei UI&quot;;</string>
         </layout>
        </widget>
       </item>
+      <item row="0" column="1" rowspan="2">
+       <widget class="QStackedWidget" name="display_widget">
+        <property name="minimumSize">
+         <size>
+          <width>660</width>
+          <height>500</height>
+         </size>
+        </property>
+        <property name="currentIndex">
+         <number>2</number>
+        </property>
+        <widget class="QWidget" name="page_rtp">
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="QLabel" name="img_label">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(0, 0, 0);</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_pb">
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="0" colspan="2">
+           <widget class="QVideoWidget" name="img_label2" native="true"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QPushButton" name="play_Btn">
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>80</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>播放</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSlider" name="horizontalSlider">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_set">
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>32</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>  UDP设置</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widget" native="true">
+            <layout class="QGridLayout" name="gridLayout">
+             <item row="1" column="2">
+              <widget class="QLabel" name="label_7">
+               <property name="text">
+                <string>FPGA Port</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="DIP_lineEdit">
+               <property name="maximumSize">
+                <size>
+                 <width>110</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>192.168.1.10</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="3">
+              <widget class="QLineEdit" name="UPt_lineEdit">
+               <property name="maximumSize">
+                <size>
+                 <width>110</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>1234</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_5">
+               <property name="text">
+                <string>FPGA IP</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QLineEdit" name="DPt_lineEdit">
+               <property name="maximumSize">
+                <size>
+                 <width>110</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>1234</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLabel" name="label_6">
+               <property name="text">
+                <string>本机 Port</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_4">
+               <property name="text">
+                <string>本机 IP</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="UIP_lineEdit">
+               <property name="maximumSize">
+                <size>
+                 <width>110</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>192.168.1.102</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widget_2" native="true">
+            <layout class="QGridLayout" name="gridLayout_2">
+             <item row="0" column="4">
+              <widget class="QLineEdit" name="H_lineEdit">
+               <property name="maximumSize">
+                <size>
+                 <width>110</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>480</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLabel" name="label_10">
+               <property name="text">
+                <string>W</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="3">
+              <widget class="QLabel" name="label_11">
+               <property name="text">
+                <string>H</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_9">
+               <property name="text">
+                <string>分辨率设置</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLineEdit" name="W_lineEdit">
+               <property name="maximumSize">
+                <size>
+                 <width>110</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>640</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QLabel" name="label_12">
+               <property name="text">
+                <string>接收模式</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="comboBox_Color">
+               <property name="maximumSize">
+                <size>
+                 <width>110</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>RGB565</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>YUV422</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="comboBox_Send">
+               <property name="maximumSize">
+                <size>
+                 <width>110</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>连续接收</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>先发后收</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="comboBox_Flag">
+               <property name="maximumSize">
+                <size>
+                 <width>110</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>2位行头</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>8位帧头</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="setc_Btn">
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>确认</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
-   <item>
+   <item row="2" column="0">
     <widget class="QFrame" name="status_frame">
      <property name="minimumSize">
       <size>
@@ -636,7 +696,7 @@ font: 700 10pt &quot;Microsoft YaHei UI&quot;;</string>
        <number>0</number>
       </property>
       <item row="0" column="0">
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="statusbar">
         <property name="text">
          <string>FPS：0</string>
         </property>

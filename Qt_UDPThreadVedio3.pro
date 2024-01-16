@@ -12,9 +12,11 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
+    udpthread.cpp \
     widget.cpp
 
 HEADERS += \
+    udpthread.h \
     widget.h
 
 FORMS += \
@@ -29,3 +31,6 @@ DISTFILES +=
 
 RESOURCES += \
     icon.qrc
+
+INCLUDEPATH += D:\opencv4.8\opencv\sources\build\install\include
+LIBS += D:\opencv4.8\opencv\sources\build\install\x64\mingw\lib\libopencv_*.a
