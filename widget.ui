@@ -171,7 +171,7 @@ font: 700 10pt &quot;Microsoft YaHei UI&quot;;</string>
          </size>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="page_rtp">
          <layout class="QGridLayout" name="gridLayout_4">
@@ -189,13 +189,26 @@ font: 700 10pt &quot;Microsoft YaHei UI&quot;;</string>
         </widget>
         <widget class="QWidget" name="page_pb">
          <layout class="QGridLayout" name="gridLayout_3">
-          <item row="0" column="0">
-           <widget class="QLabel" name="img2_label">
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(0, 0, 0);</string>
+          <item row="0" column="0" colspan="2">
+           <widget class="QVideoWidget" name="img_label2" native="true"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QPushButton" name="play_Btn">
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>80</height>
+             </size>
             </property>
             <property name="text">
-             <string/>
+             <string>播放</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSlider" name="horizontalSlider">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
            </widget>
           </item>
@@ -478,45 +491,24 @@ font: 700 10pt &quot;Microsoft YaHei UI&quot;;</string>
             </widget>
            </widget>
            <widget class="QWidget" name="page_pbt">
-            <widget class="QLabel" name="label_14">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>10</y>
-               <width>54</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>工具栏</string>
-             </property>
-            </widget>
-            <widget class="QPushButton" name="open_Btn">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>40</y>
-               <width>80</width>
-               <height>24</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>打开</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_Vedioname">
-             <property name="geometry">
-              <rect>
-               <x>20</x>
-               <y>80</y>
-               <width>54</width>
-               <height>16</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>&lt;无播放&gt;</string>
-             </property>
-            </widget>
+            <layout class="QGridLayout" name="gridLayout_8">
+             <item row="0" column="0">
+              <widget class="QPushButton" name="open_Btn">
+               <property name="maximumSize">
+                <size>
+                 <width>80</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>打开文件夹</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QTableWidget" name="tableWidget"/>
+             </item>
+            </layout>
            </widget>
            <widget class="QWidget" name="page_sett"/>
           </widget>
@@ -655,6 +647,14 @@ font: 700 10pt &quot;Microsoft YaHei UI&quot;;</string>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QVideoWidget</class>
+   <extends>QWidget</extends>
+   <header>qvideowidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
