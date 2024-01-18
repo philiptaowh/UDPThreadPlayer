@@ -439,5 +439,15 @@ void Widget::on_logSave_Btn_clicked()
     file.close();
 }
 
+//录屏
+void Widget::on_catch2_Btn_clicked()
+{
+    if(ui->testmode_Btn->text() == "开始录屏"){
+        ui->testmode_Btn->setText("停止录屏");
 
+    }else{
+        ui->testmode_Btn->setText("开始录屏");
+
+    }
+}
 

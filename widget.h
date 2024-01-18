@@ -118,6 +118,8 @@ private slots:
 
     void on_logSave_Btn_clicked();
 
+    void on_catch2_Btn_clicked();
+
 private:
     Ui::Widget *ui;
     UDP_Thread *t_udp;

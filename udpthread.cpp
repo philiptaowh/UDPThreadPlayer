@@ -5,6 +5,9 @@
 #include <QMutex>
 #include <QDir>
 
+#define RANGE_LIMIT(x) (x > 255 ? 255 : (x < 0 ? 0 : x))//用于防止yuv int变量越界
+
+
 //线程代码
 UDP_Thread::UDP_Thread(QObject *parent1)
 {
@@ -154,15 +157,42 @@ void UDP_Thread::onRecvUdpData()
                         uchar *p = reinterpret_cast<uchar *>(bytes_Data.data());// 用指针做QbyteArray转uchar
                         p=p+8;// 把帧头剥掉
                         uchar RGB_Buff[W*H*2];// 定义uchar缓存数组
-                        for(int i=0; i<W*H*2; i+=2)
-                        {
-                            RGB_Buff[i]=*(p+1);
-                            RGB_Buff[i+1]=*p;
-                            if(Mode_color == 1){
-                                //颜色转换算法
+                        if(Mode_color == 0){
+                            for(int i=0; i<W*H*2; i+=2)
+                            {
+                                RGB_Buff[i]=*(p+1);
+                                RGB_Buff[i+1]=*p;
+                                p += 2;
                             }
-                            p += 2;
-                        }// 按照RGB565把源数据存进新数组
+                        }// 直接按照RGB565把源数据存进新数组
+                        else if(Mode_color == 1){
+                            int y,u,v,r,g,b;
+                            int y_pos = 0;
+                            int u_pos = 1;
+                            int v_pos = 3;
+                            uchar *rgb_buf = RGB_Buff;
+
+                            for(int i = 0; i < H; i++) {
+                                for(int j = 0; j < W; j++) {
+                                    y = p[y_pos];
+                                    u = p[u_pos] - 128;
+                                    v = p[v_pos] - 128;
+
+                                    r = RANGE_LIMIT(y + v + ((v * 103) >> 8));
+                                    g = RANGE_LIMIT(y - ((u * 88) >> 8) - ((v * 183) >> 8));
+                                    b = RANGE_LIMIT(y + u + ((u * 198) >> 8));
+
+                                    *rgb_buf++ = (((r & 0xf8) << 8) | ((g & 0xfc) << 3) | ((b & 0xf8) >> 3));
+
+                                    y_pos += 2;
+
+                                    if (j & 0x01) {
+                                        u_pos += 4;
+                                        v_pos += 4;
+                                    }
+                                }
+                            }
+                        }// 将YUV422(VYUY)转换成RGB565存入新数组，如果是其他类型的YUV需要修改_pos 中的值
                         emit img_OK(RGB_Buff,W,H);// 向上位机发信号
                         bytes_Data.clear();
                         bytes_Data.append(buff_temp);
