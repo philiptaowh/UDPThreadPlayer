@@ -6,6 +6,7 @@
 #include <QTableWidgetItem>
 
 #include "udpthread.h"
+#include "SRthread.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -25,7 +26,7 @@ public:
     QTimer *timer;// 计时器
     int Frame_num=0;// 帧数统计
     unsigned int Mb = 0;// 流量统计
-    int FPS = 30;// 录屏帧率
+    bool record_flag = 0;//是否录屏标志，如果在录屏时切换到其他窗口或者中断接收、使用截屏功能则会根据标志判断来中断录屏
 
     void img_save();// 保存图片
 
@@ -49,6 +50,14 @@ signals:
     void frameflag_change(int flag);//帧头模式切换，支持正点8位头和2位行序号头的切换
 
     void colormode_change(int index);//颜色模式切换，两种常用的16bit色彩格式，RGB565和YUV422
+
+    void FPS_change(int FPS);//保存视频帧率切换
+
+    void StartRecord(int W,int H);//开始录屏信号
+
+    void StopRecord();//停止录屏信号
+
+    void Framesend(QImage Frame);//录屏时，成功合成了一张图片后，就通过信号将它发给对应线程
 
 private slots:
 
@@ -120,9 +129,12 @@ private slots:
 
     void on_catch2_Btn_clicked();
 
+    void on_FPS_lineEdit_textChanged(const QString &arg1);
+
 private:
     Ui::Widget *ui;
     UDP_Thread *t_udp;
+    SR_Thread *save_record;
     QPointF m_lastPos;
     int set_flag[5] = {0,0,0,0,0};
     void  mouseMoveEvent(QMouseEvent *event) override;

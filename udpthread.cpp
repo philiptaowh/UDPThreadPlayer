@@ -39,6 +39,7 @@ UDP_Thread::~UDP_Thread()
     }
 }
 
+//控制udp接收线程启动或者中断的函数
 void UDP_Thread::stop()
 {
     thread1_On = false;
@@ -250,8 +251,6 @@ void UDP_Thread::onRecvUdpData()
         }
     }
 }
-
-
 
 void UDP_Thread::new_IP(QString Uip_changed, QString Dip_changed){
     U_ip = Uip_changed;

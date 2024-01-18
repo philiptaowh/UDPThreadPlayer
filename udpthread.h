@@ -7,13 +7,6 @@
 #include <QPixmap>
 #include <QDebug>
 
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/core/core.hpp>
-#include <opencv2/opencv.hpp>
-#include <opencv2/imgproc/types_c.h>
-#include <opencv2/videoio.hpp>
-
 class UDP_Thread : public QObject
 {
     Q_OBJECT

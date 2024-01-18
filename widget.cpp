@@ -9,9 +9,6 @@
 #include <QTimer>
 #include <QDateTime>
 
-#include <QBuffer>
-#include <QRandomGenerator>
-
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
@@ -22,13 +19,20 @@ Widget::Widget(QWidget *parent)
     t_udp->udpInit("192.168.1.102",1234,"192.168.1.10",1234);
     t_udp->udpThreadStart();
 
+    save_record = new SR_Thread(this);
+    save_record->SRThreadStart();
+
     connect(t_udp,&UDP_Thread::UDPMsg,this,&Widget::on_displayMsg);// 线程向主函数传输日志
+    connect(save_record,&SR_Thread::SRMsg,this,&Widget::on_displayMsg);// 线程向主函数传输日志
     connect(player,SIGNAL(durationChanged(qint64)),this,SLOT(onPlayerDurationChanged(qint64)));//视频长度改变，打印出来
     connect(player,SIGNAL(positionChanged(qint64)),this,SLOT(onPlayerPositionChanged(qint64)));//进度条位置改变，打印出来
     connect(ui->horizontalSlider,SIGNAL(sliderMoved(int)),this,SLOT(onSliderMoved(int)));//拖动进度条，改变视频的进度
     connect(this,&Widget::t_setChange,t_udp,&UDP_Thread::statementChange);// 父线程发送"开始"信号，run的真正功能部分开始运行
     connect(t_udp,&UDP_Thread::img_OK,this,&Widget::img_process);// 子线程回发数据，父线程处理数据
     connect(t_udp,&UDP_Thread::rec_count,this,&Widget::onrec_count);// 子线程发送流量数据
+    connect(this,&Widget::StartRecord,save_record,&SR_Thread::onStartRecord);// 父线程发送开始接收信号，子线程新建视频对象
+    connect(this,&Widget::StopRecord,save_record,&SR_Thread::onStopRecord);// 父线程中出现变动后发送停止接收信号，子线程保存视频对象
+    connect(this,&Widget::Framesend,save_record,&SR_Thread::onFramesend);// 父线程发送一帧数据，子线程将这一帧格式转换后存入视频对象
     connect(this,&Widget::ip_change,t_udp,&UDP_Thread::new_IP);//IP改变
     connect(this,&Widget::port_change,t_udp,&UDP_Thread::new_port);//port改变
     connect(this,&Widget::w_change,t_udp,&UDP_Thread::new_w);//分辨率w改变
@@ -37,6 +41,7 @@ Widget::Widget(QWidget *parent)
     connect(this,&Widget::frameflag_change,t_udp,&UDP_Thread::new_flagmode);//多路帧头改变
     connect(this,&Widget::colormode_change,t_udp,&UDP_Thread::new_colormode);//颜色模式改变
     connect(this,&Widget::FPGAclass_change,t_udp,&UDP_Thread::new_FPGAmode);//颜色模式改变
+    connect(this,&Widget::FPS_change,save_record,&SR_Thread::new_FPS);//录屏帧率改变
 
     ui->tableWidget->setColumnCount(1);//设置列数
     QStringList header;
@@ -62,7 +67,7 @@ Widget::~Widget()
 }
 
 void Widget::debug(){
-    //
+    //查错时使用的后门程序
 }
 
 // 图片显示代码
@@ -74,6 +79,9 @@ void Widget::img_process(uchar *RGB_Buff, int W, int H){
     ui->img_label->setPixmap(QPixmap::fromImage(Frame));
     ui->img_label->show();
     Frame_num++;// 帧率累计
+    if(record_flag){
+        emit Framesend(Frame);
+    }//在录屏时，将一帧图像传输到子线程中
 }
 
 // 数据直接显示代码
@@ -194,6 +202,13 @@ void Widget::on_pb_Btn_clicked()
     ui->set_Btn->setDown(false);
     QString Msg = QDateTime::currentDateTime().toString("hh:mm:ss") + " 进入回放模式";
     ui->log_Browser->append(Msg);
+    if(record_flag){
+        ui->catch2_Btn->setText("开始录屏");
+        emit StopRecord();
+        QString Msg = QDateTime::currentDateTime().toString("hh:mm:ss") + " 录屏被中断";
+        ui->log_Browser->append(Msg);
+        record_flag=0;
+    }//录屏中断
 }
 
 //切换设置界面
@@ -205,6 +220,13 @@ void Widget::on_set_Btn_clicked()
     ui->pb_Btn->setDown(false);
     QString Msg = QDateTime::currentDateTime().toString("hh:mm:ss") + " 进入设置";
     ui->log_Browser->append(Msg);
+    if(record_flag){
+        ui->catch2_Btn->setText("开始录屏");
+        emit StopRecord();
+        QString Msg = QDateTime::currentDateTime().toString("hh:mm:ss") + " 录屏被中断";
+        ui->log_Browser->append(Msg);
+        record_flag=0;
+    }//录屏中断
 }
 
 //重写退出按钮
@@ -343,6 +365,11 @@ void Widget::on_comboBox_Color_currentIndexChanged(int index)
 }
 
 //录屏帧率改变
+void Widget::on_FPS_lineEdit_textChanged(const QString &arg1)
+{
+    this->set_flag[4] = 1;
+}
+
 void Widget::on_lineEdit_textChanged(const QString &arg1)
 {
     this->set_flag[4] = 1;
@@ -358,6 +385,13 @@ void Widget::on_testmode_Btn_clicked()
         ui->dpym_Widget->setCurrentIndex(1);
         QString Msg = QDateTime::currentDateTime().toString("hh:mm:ss") + " 更改为调试模式";
         ui->log_Browser->append(Msg);
+        if(record_flag){
+            ui->catch2_Btn->setText("开始录屏");
+            emit StopRecord();
+            QString Msg = QDateTime::currentDateTime().toString("hh:mm:ss") + " 录屏被中断";
+            ui->log_Browser->append(Msg);
+            record_flag=0;
+        }//录屏中断
     }else{
         ui->testmode_Btn->setText("调试模式");
         ui->dpym_Widget->setCurrentIndex(0);
@@ -401,7 +435,9 @@ void Widget::on_setc_Btn_clicked()
         emit h_change(H);
     }
     if(this->set_flag[4]){
-        FPS=ui->FPS_lineEdit->text().toInt();
+        int F;
+        F = ui->FPS_lineEdit->text().toInt();
+        emit FPS_change(F);
         QString Msg = QDateTime::currentDateTime().toString("hh:mm:ss") + " 录屏帧率改变："+ui->FPS_lineEdit->text();
         ui->log_Browser->append(Msg);
     }
@@ -414,6 +450,13 @@ void Widget::on_setc_Btn_clicked()
 void Widget::on_catch_Btn_clicked()
 {
     img_save();
+    if(record_flag){
+        ui->catch2_Btn->setText("开始录屏");
+        emit StopRecord();
+        QString Msg = QDateTime::currentDateTime().toString("hh:mm:ss") + " 录屏被中断";
+        ui->log_Browser->append(Msg);
+        record_flag=0;
+    }//录屏中断
 }
 
 //日志栏清空
@@ -442,12 +485,35 @@ void Widget::on_logSave_Btn_clicked()
 //录屏
 void Widget::on_catch2_Btn_clicked()
 {
-    if(ui->testmode_Btn->text() == "开始录屏"){
-        ui->testmode_Btn->setText("停止录屏");
-
-    }else{
-        ui->testmode_Btn->setText("开始录屏");
-
+    if(ui->catch2_Btn->text() == "开始录屏"){//开始录屏的代码
+        ui->catch2_Btn->setText("停止录屏");
+        QString Msg = "";
+        bool isok = Frame.isNull();
+        if(isok){
+            if(ui->testmode_Btn->text() == "播放模式"){
+                Msg = QDateTime::currentDateTime().toString("hh:mm:ss") + " 调试模式下无法录屏";
+                ui->log_Browser->append(Msg);
+                ui->catch2_Btn->setText("开始录屏");
+            }
+            else{
+                Msg = QDateTime::currentDateTime().toString("hh:mm:ss") + " 暂无数据，无法录屏";
+                ui->log_Browser->append(Msg);
+                ui->catch2_Btn->setText("开始录屏");
+            }
+        }
+        else{
+            int W = ui->W_lineEdit->text().toInt();
+            int H = ui->H_lineEdit->text().toInt();
+            emit StartRecord(W,H);
+            record_flag = 1;
+        }
+    }
+    else{//停止录屏的代码
+        ui->catch2_Btn->setText("开始录屏");
+        emit StopRecord();
+        QString Msg = QDateTime::currentDateTime().toString("hh:mm:ss") + " 录屏正常结束";
+        ui->log_Browser->append(Msg);
     }
 }
+
 
