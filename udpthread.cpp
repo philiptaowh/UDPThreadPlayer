@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QMutex>
+#include <QDir>
 
 //线程代码
 UDP_Thread::UDP_Thread(QObject *parent1)
@@ -74,7 +75,6 @@ void UDP_Thread::Array2file(QString path, QByteArray Data)
     if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)){
         return;
     }
-    emit UDPMsg(QDateTime::currentDateTime().toString("hh:mm:ss")+"新建文本");
     QTextStream out(&file);
     for(int i=0;i<Data.size();i++){
         out << Data.at(i);
@@ -126,8 +126,12 @@ void UDP_Thread::onRecvUdpData()
             QByteArray buff_temp;//定义缓冲区
             buff_temp.resize(socket->pendingDatagramSize());
             socket->readDatagram(buff_temp.data(),buff_temp.size());// 读取socket数据，读完之后就没了，而且必须没了才能接着收
-            Array2file("D:/text.txt",buff_temp);
-            qDebug()<< QDateTime::currentDateTime().toString("hh:mm:ss")<<"写入txt";
+            QString path = QDir::currentPath();
+            path.replace("/","\\");
+            path.append("\\"+QDateTime::currentDateTime().toString("/yyyy-MM-dd_HH：mm：ss"));
+            path.append("_packeg.txt");
+            Array2file(path,buff_temp);//保存文件
+            emit data_send(buff_temp);//发送收到的数据
         }
         // 显示模式，能够显示连续的视频
         else if(Mode_display == 1){

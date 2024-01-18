@@ -69,6 +69,8 @@ signals:
 
     void UDPMsg(QString Msg);//将状态信息作为信号传入显示框
 
+    void data_send(QByteArray data);// 将接收到的数据直接显示的信号
+
 public slots:
     void onUdpThreadCreate();
 

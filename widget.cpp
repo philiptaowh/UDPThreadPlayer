@@ -9,6 +9,9 @@
 #include <QTimer>
 #include <QDateTime>
 
+#include <QBuffer>
+#include <QRandomGenerator>
+
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
@@ -47,12 +50,19 @@ Widget::Widget(QWidget *parent)
 
     ui->display_widget->setCurrentIndex(0);//初始化显示屏
     ui->tool_widget->setCurrentIndex(0);//初始化工具栏
+    ui->dpym_Widget->setCurrentIndex(0);//初始化显示模式
     ui->log_Browser->append("你好，欢迎使用系统");
+
+    debug();//查错代码
 }
 
 Widget::~Widget()
 {
     delete ui;
+}
+
+void Widget::debug(){
+    //
 }
 
 // 图片显示代码
@@ -64,6 +74,23 @@ void Widget::img_process(uchar *RGB_Buff, int W, int H){
     ui->img_label->setPixmap(QPixmap::fromImage(Frame));
     ui->img_label->show();
     Frame_num++;// 帧率累计
+}
+
+// 数据直接显示代码
+void Widget::rawdata_process(QByteArray data){
+        int l = data.length();
+        for(int i = 0; i < l; i++){
+            QString a = "";
+            a.append(data.at(i));
+            ui->data_browser->insertPlainText(a);
+            if(i%2 == 1){
+                ui->data_browser->insertPlainText(" ");
+            }
+            if(i%64 == 63){
+                ui->data_browser->insertPlainText("\n");
+            }
+        }
+        ui->data_browser->insertPlainText("\n");
 }
 
 // 保存照片代码
@@ -152,6 +179,8 @@ void Widget::on_rtp_Btn_clicked()
 {
     ui->display_widget->setCurrentIndex(0);
     ui->tool_widget->setCurrentIndex(0);
+    ui->pb_Btn->setDown(false);
+    ui->set_Btn->setDown(false);
     QString Msg = QDateTime::currentDateTime().toString("hh:mm:ss") + " 进入直播模式";
     ui->log_Browser->append(Msg);
 }
@@ -161,6 +190,8 @@ void Widget::on_pb_Btn_clicked()
 {
     ui->display_widget->setCurrentIndex(1);
     ui->tool_widget->setCurrentIndex(1);
+    ui->rtp_Btn->setDown(false);
+    ui->set_Btn->setDown(false);
     QString Msg = QDateTime::currentDateTime().toString("hh:mm:ss") + " 进入回放模式";
     ui->log_Browser->append(Msg);
 }
@@ -170,6 +201,8 @@ void Widget::on_set_Btn_clicked()
 {
     ui->display_widget->setCurrentIndex(2);
     ui->tool_widget->setCurrentIndex(2);
+    ui->rtp_Btn->setDown(false);
+    ui->pb_Btn->setDown(false);
     QString Msg = QDateTime::currentDateTime().toString("hh:mm:ss") + " 进入设置";
     ui->log_Browser->append(Msg);
 }
@@ -309,6 +342,12 @@ void Widget::on_comboBox_Color_currentIndexChanged(int index)
     emit colormode_change(index);
 }
 
+//录屏帧率改变
+void Widget::on_lineEdit_textChanged(const QString &arg1)
+{
+    this->set_flag[4] = 1;
+}
+
 //调试&播放模式改变
 void Widget::on_testmode_Btn_clicked()
 {
@@ -316,10 +355,12 @@ void Widget::on_testmode_Btn_clicked()
     if(ui->testmode_Btn->text() == "调试模式"){
         ui->testmode_Btn->setText("播放模式");
         index = 0;
+        ui->dpym_Widget->setCurrentIndex(1);
         QString Msg = QDateTime::currentDateTime().toString("hh:mm:ss") + " 更改为调试模式";
         ui->log_Browser->append(Msg);
     }else{
         ui->testmode_Btn->setText("调试模式");
+        ui->dpym_Widget->setCurrentIndex(0);
         index = 1;
         QString Msg = QDateTime::currentDateTime().toString("hh:mm:ss") + " 更改为播放模式";
         ui->log_Browser->append(Msg);
@@ -359,7 +400,12 @@ void Widget::on_setc_Btn_clicked()
         H=ui->H_lineEdit->text().toInt();
         emit h_change(H);
     }
-    for(int i = 0; i<4 ; i++){
+    if(this->set_flag[4]){
+        FPS=ui->FPS_lineEdit->text().toInt();
+        QString Msg = QDateTime::currentDateTime().toString("hh:mm:ss") + " 录屏帧率改变："+ui->FPS_lineEdit->text();
+        ui->log_Browser->append(Msg);
+    }
+    for(int i = 0; i<5 ; i++){
         this->set_flag[i] = 0;
     }
 }
@@ -369,4 +415,29 @@ void Widget::on_catch_Btn_clicked()
 {
     img_save();
 }
+
+//日志栏清空
+void Widget::on_logClr_Btn_clicked()
+{
+    ui->log_Browser->clear();
+    ui->log_Browser->append("你好，欢迎使用系统");
+}
+
+//日志栏保存
+void Widget::on_logSave_Btn_clicked()
+{
+    QString path = QDir::currentPath();
+    path.replace("/","\\");
+    path.append("\\"+QDateTime::currentDateTime().toString("/yyyy-MM-dd_HH：mm：ss"));
+    path.append("_log.txt");
+    QFile file(path);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)){
+        return;
+    }
+    QTextStream out(&file);
+    out << ui->log_Browser->toPlainText();
+    file.close();
+}
+
+
 

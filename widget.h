@@ -25,8 +25,11 @@ public:
     QTimer *timer;// 计时器
     int Frame_num=0;// 帧数统计
     unsigned int Mb = 0;// 流量统计
+    int FPS = 30;// 录屏帧率
 
     void img_save();// 保存图片
+
+    void debug();//特殊的妙妙工具
 
 signals:
     void t_setChange();//发送改变run函数起止状态的信号
@@ -56,6 +59,8 @@ private slots:
     void onSliderMoved(int value);// 通过滑条改动视频进度
 
     void on_displayMsg(QString Msg);// 将来自线程的信息显示在日志栏
+
+    void rawdata_process(QByteArray data);// 接收调试模式的纯数据，显示在文字框中
 
     void img_process(uchar *RGB_Buff, int W, int H);// 处理子线程存好的图像数组，显示在框中
 
@@ -99,6 +104,8 @@ private slots:
 
     void on_comboBox_Color_currentIndexChanged(int index);
 
+    void on_lineEdit_textChanged(const QString &arg1);
+
     void on_testmode_Btn_clicked();
 
     void on_Start_Stop_clicked();
@@ -107,11 +114,15 @@ private slots:
 
     void on_catch_Btn_clicked();
 
+    void on_logClr_Btn_clicked();
+
+    void on_logSave_Btn_clicked();
+
 private:
     Ui::Widget *ui;
     UDP_Thread *t_udp;
     QPointF m_lastPos;
-    int set_flag[4] = {0,0,0,0};
+    int set_flag[5] = {0,0,0,0,0};
     void  mouseMoveEvent(QMouseEvent *event) override;
     void  mousePressEvent(QMouseEvent *event) override;
     void  mouseReleaseEvent(QMouseEvent *event) override;
